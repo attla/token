@@ -1,0 +1,59 @@
+{
+    "name": "attla/token",
+    "description": "Turn everything into a unique encrypted JWT.",
+    "keywords": [
+        "attla",
+        "laravel",
+        "data-to-token",
+        "tokenizer"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nicolau",
+            "email": "nicolau@zunq.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.5",
+        "attla/pincryp": "dev-main",
+        "hisorange/browser-detect": "^5.0",
+        "nesbot/carbon": ">=2.64"
+    },
+    "autoload": {
+        "psr-4": {
+            "Attla\\Token\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "aliases": {
+                "Token": "Attla\\Token\\Facade"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require-dev": {
+        "pestphp/pest": "^1.22",
+        "phpbench/phpbench": "^1.2",
+        "pestphp/pest-plugin-global-assertions": "^1.0",
+        "orchestra/testbench": "^7.19"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/",
+            "Benchmark\\": "tests/benchmark/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage-html coverage",
+        "benchmark": "./vendor/bin/phpbench run --report=default"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
