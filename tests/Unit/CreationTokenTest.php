@@ -15,12 +15,11 @@ it('is valid token type? [secret]', function ($value, $secret) {
 })->with('string')
 ->with('passphrases');
 
-it('each time generate a unique token?', function ($value, $secret) {
-    $token = create($value, $secret);
+it('each time generate a unique token?', function ($value) {
+    $token = create($value);
 
     assertNotSame($token->get(), $token->get());
-})->with('string')
-->with('passphrases');
+})->with('var-types');
 
 it(
     'always generate a unique token?',
@@ -38,8 +37,8 @@ it(
     ))))
 )->with('value');
 
-it('have the correct value type?', function ($value, $secret) {
-    $decoder = parse(create($value, $secret)->get(), $secret);
+it('have the correct value type?', function ($value) {
+    $decoder = parse(create($value)->get());
     $type = gettype($value);
     if ($type == 'array') {
         $decoder->associative();
@@ -48,8 +47,7 @@ it('have the correct value type?', function ($value, $secret) {
     assertTrue($decoder->isValid());
     assertEquals($type, gettype($decoder->get()));
     assertEquals($value, $decoder->get());
-})->with('var-types')
-->with('passphrase');
+})->with('var-types');
 
 it('invalid if decoded with wrong secret?', function ($value, $secret) {
     $decoder = parse(create($value)->get(), $secret);
