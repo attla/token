@@ -6,24 +6,48 @@ use Attla\Token\Factory as Token;
 
 class TokenBench
 {
+    /**
+     * Secret passphrase
+     *
+     * @var string
+     */
     protected $secret = 'Now I am become Death, the destroyer of worlds.';
-    protected $encoded = 'oWawXBSVCosJSecCNogWJwz1_2G43SkNMAsU2kJVTDgSRfdZtwHt2gPo3zxHzEU28dgTVq2ViKdivUVCeeFgcs_3cD61nHgn9XRVBrsFMMWWhWYY';
+
+    /**
+     * Benchmark data example
+     *
+     * @var array
+     */
+    protected $data = [
+        'name'  => 'John Doe',
+        'email' => 'john@e.com',
+    ];
+
+    /**
+     * Benchmark encoded data example
+     *
+     * @var string
+     */
+    protected $encodedData = '';
+
+    public function __construct()
+    {
+        $this->encodedData = $this->benchEncode();
+    }
 
     /** @Revs(1000) */
     public function benchEncode()
     {
-        Token::create()
+        return Token::create()
             ->secret($this->secret)
-            ->payload([
-                'name'  => 'John Doe',
-                'email' => 'john@e.com',
-            ])->get();
+            ->payload($this->data)
+            ->get();
     }
 
     /** @Revs(1000) */
     public function benchDecode()
     {
-        Token::parse($this->encoded)
+        Token::parse($this->encodedData)
             ->secret($this->secret)
             ->get();
     }
@@ -33,10 +57,8 @@ class TokenBench
     {
         $token = Token::create()
             ->secret($this->secret)
-            ->payload([
-                'name'  => 'John Doe',
-                'email' => 'john@e.com',
-            ])->get();
+            ->payload($this->data)
+            ->get();
 
         Token::parse($token)->secret($this->secret)->get();
     }
