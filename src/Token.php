@@ -95,6 +95,13 @@ class Token extends AbstractData
     public $pincryp;
 
     /**
+     * Group part separator
+     *
+     * @var string
+     */
+    private $separator = '.';
+
+    /**
      * Create a new Token instance
      *
      * @param object|array $source
@@ -469,13 +476,12 @@ class Token extends AbstractData
     }
 
     /**
-     * Return token as string.
+     * Split the token into groups
      *
-     * @return string
+     * @return string[]
      */
-    public function parsed(): string
-    {
-        return implode('_', array_filter([$this->headerString, $this->bodyString, $this->signature]));
+    public function getParts($token) {
+        return explode($this->separator, $token);
     }
 
     /**
@@ -485,8 +491,10 @@ class Token extends AbstractData
      */
     public function __toString(): string
     {
-        return $this->parsed() ?: implode('_', [
-            $this->encodedHeader(), $this->encodedBody(), $this->signature()
+        return implode($this->separator, [
+            $this->headerString ?: $this->encodedHeader(),
+            $this->bodyString ?: $this->encodedBody(),
+            $this->signature(),
         ]);
     }
 }

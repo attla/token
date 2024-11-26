@@ -180,11 +180,9 @@ class Creator extends AbstractFactory
      */
     public function get(): string
     {
-        return implode('_', [
-            $this->token->encodedHeader(),
-            $this->token->encodedBody(),
-            $this->token->signature(),
-        ]);
+        $this->token->headerString = '';
+        $this->token->bodyString = '';
+        return $this->token->__toString();
     }
 
     /**

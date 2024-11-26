@@ -163,12 +163,13 @@ class Parser extends AbstractFactory
             $this->parsed
             || !$this->tokenString
             || !is_string($this->tokenString)
-            || count($token = explode('_', $this->tokenString)) != 3
+            || (($parts = $this->token->getParts($this->tokenString)) !== false
+                && count($parts) != 3)
         ) {
             return;
         }
 
-        [$header, $payload, $signature] = $token;
+        [$header, $payload, $signature] = $parts;
 
         $this->token
             ->parseHeader($header)
