@@ -374,9 +374,7 @@ class Token extends AbstractData
     public function validate(string $claim, $expected = null): bool
     {
         $expected ??= $this->claims->get($claim);
-        if (empty($value = $this->getTokenValue($claim))) {
-            return true;
-        }
+        $value = $this->getTokenValue($claim);
 
         $value = is_array($value) ? $value : [$value];
         if (is_array($expected)) {
@@ -412,7 +410,10 @@ class Token extends AbstractData
      */
     protected function validateCustomClaims(): bool
     {
-        $claims = Arr::except($this->header->all(), array_merge(['e'], Claim::ALL));
+        $exceptions = array_merge(['e'], Claim::ALL);
+        $headers = Arr::except($this->header->all(), $exceptions);
+        $claims = array_merge($headers, Arr::except($this->claims->all(), array_merge($exceptions, array_keys($headers))));
+
         foreach ($claims as $claim => $expected) {
             if (!$this->validate($claim)) {
                 return false;
