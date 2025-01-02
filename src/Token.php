@@ -339,7 +339,7 @@ class Token extends AbstractData
             return true;
         }
 
-        return Util::timestamp($date) + $this->leeway() > $this->header->getInt($claim);
+        return Util::timestamp($date) + $this->leeway() >= $this->header->getInt($claim);
     }
 
     /**
