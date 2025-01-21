@@ -221,7 +221,7 @@ class Token extends AbstractData
      *
      * @return string
      */
-    public function getSignature()
+    public function sign()
     {
         return $this->hash(
             $this->headerString . $this->bodyString,
@@ -240,7 +240,7 @@ class Token extends AbstractData
             return false;
         }
 
-        return $signature === $this->getSignature();
+        return $signature === $this->sign();
     }
 
     /**
@@ -495,7 +495,7 @@ class Token extends AbstractData
         return implode($this->separator, [
             $this->headerString ?: $this->encodedHeader(),
             $this->bodyString ?: $this->encodedBody(),
-            $this->signature(),
+            $this->sign(),
         ]);
     }
 }
